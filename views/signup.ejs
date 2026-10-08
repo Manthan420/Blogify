@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("partials/head.ejs") %>
+  <title>Create account - Blogify</title>
+</head>
+
+<body>
+  <%- include("partials/nav") %>
+
+  <main class="auth-page">
+
+    <section class="auth-card">
+
+      <h1>Create your account</h1>
+
+      <p class="auth-intro">
+        You'll be able to publish posts and comment on anyone's post.
+      </p>
+
+      <a href="/user/auth/google" class="google-button">
+        Continue with Google
+      </a>    
+
+      <div class="auth-divider">
+        <span>or sign up with email</span>
+      </div>
+
+      <form action="/user/Signup" method="post" class="auth-form">
+
+        <div class="form-field">
+          <label for="fullName">
+            Full name
+          </label>
+
+          <input
+            type="text"
+            id="fullName"
+            name="fullName"
+            placeholder="Your full name"
+            required
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="email">
+            Email
+          </label>
+
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@example.com"
+            required
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="password">
+            Password
+          </label>
+
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+          >
+        </div>
+
+        <button
+          type="submit"
+          class="auth-submit"
+        >
+          Create account
+        </button>
+
+      </form>
+
+      <p class="auth-footer">
+        Already have an account?
+        <a href="/user/signin">
+          Sign in
+        </a>
+      </p>
+
+    </section>
+
+  </main>
+
+  <%- include("partials/script.ejs") %>
+</body>
+
+</html>

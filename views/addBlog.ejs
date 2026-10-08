@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("partials/head.ejs") %>
+  <title>Write a post - Blogify</title>
+</head>
+
+<body>
+  <%- include("partials/nav") %>
+
+  <main class="write-page">
+
+    <header class="write-header">
+      <h1>Write a post</h1>
+
+      <p>
+        Add a cover image, give your post a title, and start writing.
+      </p>
+    </header>
+
+    <form
+      action="/blog"
+      method="post"
+      enctype="multipart/form-data"
+      class="write-form"
+    >
+
+      <div class="write-main">
+
+        <div class="form-field">
+          <label for="title">
+            Title
+          </label>
+
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Give your post a title"
+            required
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="body">
+            Your post
+          </label>
+
+          <textarea
+            id="body"
+            name="body"
+            placeholder="Start writing..."
+            required
+          ></textarea>
+        </div>
+
+      </div>
+
+      <aside class="write-sidebar">
+
+        <div class="cover-field">
+          <label for="coverImage">
+            Cover image
+          </label>
+
+          <label for="coverImage" class="cover-upload">
+
+            <span class="upload-icon" aria-hidden="true">
+              ↥
+            </span>
+
+            <span>
+              Drag an image here, or
+            </span>
+
+            <span class="choose-image">
+              Choose image
+            </span>
+
+            <input
+              type="file"
+              id="coverImage"
+              name="coverImage"
+              accept="image/png, image/jpeg"
+            >
+
+          </label>
+
+          <p class="upload-help">
+            JPG or PNG. Wide images look best on the home page.
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          class="publish-button"
+        >
+          Publish post
+        </button>
+
+        <a href="/" class="cancel-link">
+          Cancel
+        </a>
+
+      </aside>
+
+    </form>
+
+  </main>
+
+  <%- include("partials/script.ejs") %>
+</body>
+
+</html>

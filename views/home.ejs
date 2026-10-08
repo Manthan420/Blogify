@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include("partials/head.ejs") %>
+  <title>Blogify</title>
+</head>
+
+<body>
+  <%- include("partials/nav") %>
+
+  <main class="home-page">
+
+    <!-- HERO -->
+    <section class="home-hero">
+
+      <div class="hero-text">
+        <h1>
+          Write it down.<br>
+          Share it with<br>
+          everyone.
+        </h1>
+      </div>
+
+      <div class="hero-side">
+        <p>
+          Blogify is a simple place to publish posts with a
+          cover image, read what other people wrote, and talk
+          about it in the comments.
+        </p>
+
+        <div class="hero-actions">
+
+          <% if (locals.user) { %>
+            <a href="/blog/add-new" class="button button-primary">
+              Write a post
+            </a>
+          <% } %>
+
+          <a href="#latest-posts" class="button button-secondary">
+            Browse posts
+          </a>
+
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- LATEST POSTS -->
+    <section class="latest-posts" id="latest-posts">
+
+      <div class="section-heading">
+        <h2>Latest posts</h2>
+
+        <span class="post-count">
+          <%= blogs.length %> posts
+        </span>
+      </div>
+
+
+      <% if (blogs.length > 0) { %>
+
+        <!-- FEATURED POST -->
+        <article class="featured-post">
+
+          <a
+            href="/blog/<%= blogs[0]._id %>"
+            class="featured-image"
+          >
+            <% if (blogs[0].coverImageURL) { %>
+
+              <img
+                src="<%= blogs[0].coverImageURL %>"
+                alt="<%= blogs[0].title %>"
+              >
+
+            <% } else { %>
+
+              <div class="image-placeholder">
+                <span>Cover image</span>
+              </div>
+
+            <% } %>
+          </a>
+
+
+          <div class="featured-content">
+
+            <h3>
+              <a href="/blog/<%= blogs[0]._id %>">
+                <%= blogs[0].title %>
+              </a>
+            </h3>
+
+            <p>
+              <%= blogs[0].body.length > 180
+                ? blogs[0].body.substring(0, 180) + "..."
+                : blogs[0].body
+              %>
+            </p>
+
+
+            <div class="post-meta">
+
+              <div class="author-avatar">
+                <%= blogs[0].createdBy && blogs[0].createdBy.fullName
+                  ? blogs[0].createdBy.fullName
+                      .split(" ")
+                      .map(name => name[0])
+                      .join("")
+                      .slice(0, 2)
+                      .toUpperCase()
+                  : "U"
+                %>
+              </div>
+
+
+              <div>
+
+                <strong>
+                  <%= blogs[0].createdBy
+                    ? blogs[0].createdBy.fullName
+                    : "Unknown author"
+                  %>
+                </strong>
+
+                <span>
+                  <%= new Date(blogs[0].createdAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric"
+                  }) %>
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- OTHER POSTS -->
+        <% if (blogs.length > 1) { %>
+
+          <div class="post-grid">
+
+            <% blogs.slice(1).forEach(blog => { %>
+
+              <article class="post-card">
+
+                <!-- POST IMAGE -->
+                <a
+                  href="/blog/<%= blog._id %>"
+                  class="post-card-image"
+                >
+
+                  <% if (blog.coverImageURL) { %>
+
+                    <img
+                      src="<%= blog.coverImageURL %>"
+                      alt="<%= blog.title %>"
+                    >
+
+                  <% } else { %>
+
+                    <div class="image-placeholder">
+                      <span>Cover image</span>
+                    </div>
+
+                  <% } %>
+
+                </a>
+
+
+                <!-- POST CONTENT -->
+                <div class="post-card-content">
+
+                  <h3>
+                    <a href="/blog/<%= blog._id %>">
+                      <%= blog.title %>
+                    </a>
+                  </h3>
+
+
+                  <p>
+                    <%= blog.body.length > 110
+                      ? blog.body.substring(0, 110) + "..."
+                      : blog.body
+                    %>
+                  </p>
+
+
+                  <!-- AUTHOR / DATE -->
+                  <div class="post-meta">
+
+                    <div class="author-avatar">
+                      <%= blog.createdBy && blog.createdBy.fullName
+                        ? blog.createdBy.fullName
+                            .split(" ")
+                            .map(name => name[0])
+                            .join("")
+                            .slice(0, 2)
+                            .toUpperCase()
+                        : "U"
+                      %>
+                    </div>
+
+
+                    <div>
+
+                      <strong>
+                        <%= blog.createdBy
+                          ? blog.createdBy.fullName
+                          : "Unknown author"
+                        %>
+                      </strong>
+
+                      <span>
+                        <%= new Date(blog.createdAt).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric"
+                        }) %>
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </article>
+
+            <% }) %>
+
+          </div>
+
+        <% } %>
+
+
+      <% } else { %>
+
+        <!-- EMPTY STATE -->
+        <div class="empty-posts">
+
+          <h3>No posts yet</h3>
+
+          <p>
+            Be the first to publish something on Blogify.
+          </p>
+
+          <% if (locals.user) { %>
+            <a
+              href="/blog/add-new"
+              class="button button-primary"
+            >
+              Write a post
+            </a>
+          <% } %>
+
+        </div>
+
+      <% } %>
+
+    </section>
+
+  </main>
+
+  <%- include("partials/script.ejs") %>
+
+</body>
+</html>

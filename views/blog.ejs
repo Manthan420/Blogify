@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("partials/head.ejs") %>
+  <title><%= blog.title %> - Blogify</title>
+</head>
+
+<body>
+  <%- include("partials/nav") %>
+
+  <main class="blog-page">
+
+    <!-- Back to posts -->
+
+    <a href="/" class="back-link">
+      ← All posts
+    </a>
+
+
+    <!-- Article header -->
+
+    <header class="blog-header">
+
+      <h1>
+        <%= blog.title %>
+      </h1>
+
+      <div class="blog-author">
+
+        <div class="author-avatar">
+          <%= blog.createdBy && blog.createdBy.fullName
+            ? blog.createdBy.fullName
+                .split(" ")
+                .map(name => name[0])
+                .join("")
+                .slice(0, 2)
+                .toUpperCase()
+            : "U"
+          %>
+        </div>
+
+        <div class="author-details">
+
+          <strong>
+            <%= blog.createdBy
+              ? blog.createdBy.fullName
+              : "Unknown author"
+            %>
+          </strong>
+
+          <span>
+            Published
+            <%= new Date(blog.createdAt).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric"
+            }) %>
+          </span>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- Cover image -->
+
+    <div class="blog-cover">
+
+      <% if (blog.coverImageURL) { %>
+
+        <img
+          src="<%= blog.coverImageURL %>"
+          alt="<%= blog.title %>"
+        >
+
+      <% } else { %>
+
+        <div class="image-placeholder">
+          <span>Cover image</span>
+        </div>
+
+      <% } %>
+
+    </div>
+
+
+    <!-- Article content -->
+
+    <article class="blog-content">
+      <div class="article-body">
+        <%= blog.body %>
+      </div>
+    </article>
+
+
+    <!-- Comments -->
+
+    <section class="comments-section">
+
+      <h2>
+        Comments (<%= comments.length %>)
+      </h2>
+
+
+      <% if (locals.user) { %>
+
+        <form
+          action="/blog/comment/<%= blog._id %>"
+          method="post"
+          class="comment-form"
+        >
+
+          <label for="comment">
+            Add a comment
+          </label>
+
+          <textarea
+            id="comment"
+            name="content"
+            placeholder="What did you think?"
+            rows="4"
+            required
+          ></textarea>
+
+          <button type="submit" class="button button-primary">
+            Post comment
+          </button>
+
+        </form>
+
+      <% } else { %>
+
+        <p class="comment-login-message">
+          Sign in to leave a comment.
+        </p>
+
+      <% } %>
+
+
+      <!-- Existing comments -->
+
+      <% if (comments.length > 0) { %>
+
+        <div class="comments-list">
+
+          <% comments.forEach(comment => { %>
+
+            <article class="comment">
+
+              <div class="comment-header">
+
+                <div class="author-avatar">
+                  <%= comment.createdBy && comment.createdBy.fullName
+                    ? comment.createdBy.fullName
+                        .split(" ")
+                        .map(name => name[0])
+                        .join("")
+                        .slice(0, 2)
+                        .toUpperCase()
+                    : "U"
+                  %>
+                </div>
+
+                <div class="comment-author">
+
+                  <strong>
+                    <%= comment.createdBy
+                      ? comment.createdBy.fullName
+                      : "Unknown user"
+                    %>
+                  </strong>
+
+                  <span>
+                    Comment
+                  </span>
+
+                </div>
+
+              </div>
+
+              <p class="comment-content">
+                <%= comment.content %>
+              </p>
+
+            </article>
+
+          <% }) %>
+
+        </div>
+
+      <% } else { %>
+
+        <p class="no-comments">
+          No comments yet. Be the first to share your thoughts.
+        </p>
+
+      <% } %>
+
+    </section>
+
+  </main>
+
+  <%- include("partials/script.ejs") %>
+</body>
+
+</html>
